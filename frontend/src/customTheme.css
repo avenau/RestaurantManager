@@ -11,7 +11,7 @@
 /* Dark Orange = #F26241 */
 
 html, #root, body {
-    background-color: #F2E1C2!important;
+    background-color: rgb(255, 255, 255)!important;
 }
 
 .btn-primary {

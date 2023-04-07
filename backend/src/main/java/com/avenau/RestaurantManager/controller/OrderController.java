@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +95,7 @@ public class OrderController {
 	 * @param model
 	 * @return manage discount page
 	 */
-	@PostMapping("/deleteDiscount")
+/*	@PostMapping("/deleteDiscount")
 	public String deleteDiscount(@RequestParam int discountId, HttpSession session, Model model) {
 		LOGGER.info("Deleting Discount!");
 		Optional<Discount> discount = discountService.find(discountId);
@@ -110,7 +108,7 @@ public class OrderController {
 		
 		model.addAttribute("allDiscounts", discountService.findAll());
 		return "manageDiscounts";
-	}
+	}*/
 	
 	/**
 	 * If the discount doesnt exist, then an invalid discount message will be produced
@@ -121,7 +119,7 @@ public class OrderController {
 	 * @param model
 	 * @return make an order page
 	 */
-	@PostMapping("/addDiscountToOrder")
+/*	@PostMapping("/addDiscountToOrder")
 	public String addDiscountToOrder(@RequestParam String discount, HttpSession session, Model model) {
 		LOGGER.info("Adding Discount to Order!");
 		if (!discountService.find(discount).isPresent()) {
@@ -162,7 +160,7 @@ public class OrderController {
 		
 		
 		return "orderPage";
-	}
+	}*/
 	
 /*
  * =============================================================================================
@@ -177,7 +175,7 @@ public class OrderController {
 	 * @param model
 	 * @return order page
 	 */
-	@PostMapping("/addToOrder")
+/*	@PostMapping("/addToOrder")
 	public String addToOrder(@RequestParam("foods") int food_id, HttpSession session, Model model) {
 		LOGGER.info("Adding Food To Order!");
 		List<Discount> currentDiscount = (List<Discount>) session.getAttribute("discounts");
@@ -199,7 +197,7 @@ public class OrderController {
 		model.addAttribute("orderPrice", totalPrice);
 		
 		return "orderPage";
-	}
+	}*/
 	
 	/**
 	 * If there is not food in the order, the order will be be complete
@@ -208,7 +206,7 @@ public class OrderController {
 	 * @param model
 	 * @return order page if there is an error, if successful, will return confirm page
 	 */
-	@GetMapping("/completeOrder")
+/*	@GetMapping("/completeOrder")
 	public String completeOrder(HttpSession session, Model model) {
 		LOGGER.info("Completing Order!");
 
@@ -239,7 +237,7 @@ public class OrderController {
 		session.removeAttribute("order");
 		session.removeAttribute("discounts");
 		return "orderConfirm";
-	}
+	}*/
 	
 	/**
 	 * Clears all the food from the current order
@@ -247,7 +245,7 @@ public class OrderController {
 	 * @param model
 	 * @return order page
 	 */
-	@GetMapping("/clearOrder")
+/*	@GetMapping("/clearOrder")
 	public String clearOrder(HttpSession session, Model model) {
 		LOGGER.info("Clearing Order!");
 		session.removeAttribute("order");
@@ -255,7 +253,7 @@ public class OrderController {
 		model.addAttribute("allFoods", foodService.findAll());
 		model.addAttribute("orderPrice", 0.0);
 		return "orderPage";
-	}
+	}*/
 	
 	/**
 	 * Changes the order status of an order
@@ -265,7 +263,7 @@ public class OrderController {
 	 * @param model
 	 * @return manage order page
 	 */
-	@PostMapping("/changeOrderStatus")
+/*	@PostMapping("/changeOrderStatus")
 	public String changeOrderStatus(@RequestParam int orderId, @RequestParam String orderStatus, HttpSession session, Model model) {
 		LOGGER.info("Changing Order Status!");
 		FoodOrder order = orderService.find(orderId);
@@ -273,7 +271,7 @@ public class OrderController {
 		orderService.save(order);
 		model.addAttribute("allOrders", orderService.findAll());
 		return "manageOrders";
-	}
+	}*/
 	
 	/**
 	 * Delete an order by id
@@ -282,14 +280,14 @@ public class OrderController {
 	 * @param model
 	 * @return manage order page
 	 */
-	@PostMapping("/deleteOrder")
+/*	@PostMapping("/deleteOrder")
 	public String deleteOrder(@RequestParam int deleteId, HttpSession session, Model model) {
 		LOGGER.info("Deleting Order!");
 		FoodOrder order = orderService.find(deleteId);
 		orderService.delete(order);
 		model.addAttribute("allOrders", orderService.findAll());
 		return "manageOrders";
-	}
+	}*/
 	
 	/**
 	 * User deletes their own order
@@ -298,7 +296,7 @@ public class OrderController {
 	 * @param model
 	 * @return user order page
 	 */
-	@PostMapping("/deleteMyOrder")
+/*	@PostMapping("/deleteMyOrder")
 	public String deleteMyOrder(@RequestParam int deleteId, HttpSession session, Model model) {
 		LOGGER.info("Deleting Own Order!");
 		FoodOrder order = orderService.find(deleteId);
@@ -307,7 +305,7 @@ public class OrderController {
 		session.setAttribute(UserController.CURRENT_USER, newUser);
 		model.addAttribute("userOrders", newUser.getOrderList());
 		return "userOrders";
-	}
+	}*/
 	
 	
 /*

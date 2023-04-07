@@ -1,8 +1,11 @@
-import { useHistory } from "react-router-dom";
-import { Button, Container, Row, Card, Image } from 'react-bootstrap';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+//import BrowseQuiz from "../components/quiz/BrowseQuiz"
+//import QuizStartPage from "../components/quiz/BrowseQuiz"
+import { Button, Container, Row, Card, Image, Carousel } from 'react-bootstrap';
 
 function HomePage() {
-    let history = useHistory();
+    let history = useNavigate();
 
     //To Redirect Page
     /*
@@ -10,23 +13,50 @@ function HomePage() {
         route being the path that was set in App.js
     */
 
-    let nav = <LoggedOut/>
+    let nav = <LoggedOut/>;
+    
 
     function LoggedOut () {
 
         return (                      
-            <Card className="text-center">
-                <Card.Header>SkillUp</Card.Header>
-                <Card.Body>
-                    <Card.Title>Welcome to SkillUp</Card.Title>
-                    <Card.Text>
-                    </Card.Text>
-                    <Button variant="primary" onClick={() => {history.push('/login')} }>Login</Button>
-                </Card.Body>
-                <Card.Footer className="text-muted"></Card.Footer>
-            </Card>
-
-        )
+            <Carousel variant="dark">
+                <Carousel.Item>
+                    <img
+                    className="d-block w-100"
+                    src="https://s7d1.scene7.com/is/image/mcdonalds/mcdonalds-McSpicy-New:1-3-product-tile-desktop?wid=829&hei=515&dpr=off"
+                    alt="First slide"
+                    />
+                    <Carousel.Caption>
+                    <h3>First slide label</h3>
+                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                    </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item>
+                    <img
+                    className="d-block w-100"
+                    src="https://mcdonalds.com.au/sites/mcdonalds.com.au/files/MicrosoftTeams-image%20%2861%29.png"
+                    alt="Second slide"
+                    />
+                    <Carousel.Caption>
+                    <h3>Second slide label</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item>
+                    <img
+                    className="d-block w-100"
+                    src="https://www.highpoint.com.au/Upload/Highpoint/Media/Store-Logo/mcdonalds-logo.png?width=250&height=161"
+                    alt="Third slide"
+                    />
+                    <Carousel.Caption>
+                    <h3>Third slide label</h3>
+                    <p>
+                        Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+                    </p>
+                    </Carousel.Caption>
+                </Carousel.Item>
+            </Carousel>
+        );
     }
 
     

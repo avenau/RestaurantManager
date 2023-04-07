@@ -1,6 +1,5 @@
 package com.avenau.RestaurantManager.controller;
 
-import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,26 +60,26 @@ public class UserController {
 	 * @param model
 	 * @return user orders page
 	 */
-	@GetMapping("/getUserOrdersPage")
+/*	@GetMapping("/getUserOrdersPage")
 	public String getUsersOrdersPage(HttpSession session, Model model) {
 		LOGGER.info("Getting User Order Page!");
 		User currentCustomer = updateCurrentUser(session);
 		model.addAttribute("userOrders",currentCustomer.getOrderList());
 		return "userOrders";
-	}
+	}*/
 
 	/**
 	 * Updates the session with the most recent user object in the database
 	 * @param session
 	 * @return the most recent user object from the database
 	 */
-	public User updateCurrentUser(HttpSession session) {
+/*	public User updateCurrentUser(HttpSession session) {
 		LOGGER.info("Updating User!");
 		User currentCustomer = (User) session.getAttribute(CURRENT_USER);
 		User updatedCustomer = userService.find(currentCustomer.getUser_id());
 		session.setAttribute(CURRENT_USER, updatedCustomer);
 		return updatedCustomer;
-	}
+	}*/
 	
 	
 	
@@ -89,7 +88,7 @@ public class UserController {
 	 * @return confirm page if successful, if not will return back to register page
 	 */
 	
-	@PostMapping("/registerUser")
+/*	@PostMapping("/registerUser")
 	public String registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String confirmpassword, HttpSession session, Model model) {
 		LOGGER.info("Registering User");
 		if (userService.find(username) != null) {
@@ -106,7 +105,7 @@ public class UserController {
 
 		this.userService.save(newUser);
 		return HOME_URL;
-	}	
+	}	*/
 	
 	
 	/**
@@ -117,7 +116,7 @@ public class UserController {
 	 * @param model
 	 * @return home page if username and password is valid, if not, will return back to login page
 	 */
-	@PostMapping("/loginUser")
+/*	@PostMapping("/loginUser")
 	public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
 		LOGGER.info("Logging User In!");
 		if (!userService.validateLogin(username, password)) {
@@ -127,19 +126,19 @@ public class UserController {
 		User currentUser =userService.find(username);
 		session.setAttribute(CURRENT_USER, currentUser);
 		return HOME_URL;
-	}
+	}*/
 	
 	/**
 	 * Logs user out. Removes user from session
 	 * @param session
 	 * @return home page
 	 */
-	@GetMapping("/logoutUser")
+/*	@GetMapping("/logoutUser")
 	public String logoutUser(HttpSession session) {
 		LOGGER.info("Logging User Out!");
 		session.invalidate();
 		return HOME_URL;
-	}
+	}*/
 	
 
 }
