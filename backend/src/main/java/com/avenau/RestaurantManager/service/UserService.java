@@ -41,12 +41,12 @@ public class UserService {
 	}
 	
 	public User find(String name) {
-		User foundCustomer = userRepo.findByUsername(name);
+		Optional<User> foundCustomer = userRepo.findByUsername(name);
 		if (userRepo.findByUsername(name) == null) {
 			return null;
 		}
 		
-		return foundCustomer;
+		return foundCustomer.get();
 	}
 	
 	public List<User>findAll() {
@@ -55,13 +55,14 @@ public class UserService {
 
 	public boolean validateLogin(String username, String password) {
 		// TODO Auto-generated method stub
-		User customer = userRepo.findByUsername(username);
+		Optional<User> customer = userRepo.findByUsername(username);
 		if (customer == null) {
 			System.out.println("first");
 			return false;
 		}
 		
-		if (!password.equals(customer.getPassword())) {
+		
+		if (!password.equals(customer.get().getPassword())) {
 			System.out.println("second");
 			return false;
 		}
@@ -69,5 +70,6 @@ public class UserService {
 		
 		return true;
 	}
+
 	
 }

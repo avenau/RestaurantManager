@@ -7,4 +7,4 @@ export const ADMIN_ACCOUNT_TYPE = 'admin';
 
 
 // URI related
-export const BACKEND_LOGIN_URI = 'http://localhost:9999/auth/login';
+export const BACKEND_LOGIN_URI = 'http://localhost:8088/auth/login';

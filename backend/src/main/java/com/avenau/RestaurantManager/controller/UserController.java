@@ -1,19 +1,33 @@
 package com.avenau.RestaurantManager.controller;
 
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.avenau.RestaurantManager.HttpResponse.LoginResponse;
+import com.avenau.RestaurantManager.Security.AccountDetails;
+import com.avenau.RestaurantManager.models.AuthRequest;
 import com.avenau.RestaurantManager.models.User;
+import com.avenau.RestaurantManager.service.AccountDetailsService;
 import com.avenau.RestaurantManager.service.UserService;
+import com.avenau.RestaurantManager.util.JwtUtil;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 	
 
@@ -22,7 +36,8 @@ public class UserController {
 	public static final String LOGIN_URL = "login";
 	public static final String REGISTER_URL = "register";
 	public static final String CURRENT_USER = "currentUser";
-	private static final Logger LOGGER = LogManager.getLogger(UserController.class);
+	private Log log = LogFactory.getLog(AccountDetailsService.class);
+	private JwtUtil jwtUtil;
 	
 	
 	private UserService userService;
@@ -40,19 +55,46 @@ public class UserController {
 	 */
 	@GetMapping("/getRegister")
 	public String getRegisterPage() {
-		LOGGER.info("Getting Register Page!");
+		log.info("Getting Register Page!");
 		return REGISTER_URL;
 	}
 	
 	/**
-	 * 
-	 * @return login page
+	 * Generates token for front end
+	 * @param authRequest
+	 * @return
+	 * @throws Exception
 	 */
-	@GetMapping("/getLogin")
-	public String getLoginPage() {
-		LOGGER.info("Getting Login Page!");
-		return LOGIN_URL;
-	}	
+	@CrossOrigin(origins = "http://localhost:3000")
+	@PostMapping("/auth/login")
+	public ResponseEntity<?> generateToken(@RequestBody AuthRequest authRequest) throws Exception {
+		log.info("new login request received");
+	    HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.set("Access-Control-Allow-Origin", "*");
+		User user = userService.find(authRequest.getUsername());
+		AccountDetails accountDetails = new AccountDetails(user);
+		String jwt = jwtUtil.generateToken(accountDetails);
+		ResponseEntity<LoginResponse> response = ResponseEntity.ok()
+			    .header("Access-Control-Allow-Origin", "*")
+			    .body(new LoginResponse(HttpStatus.ACCEPTED,
+			                             accountDetails.getUsername(),
+			                             user.getUser_id(),
+			                             ((AccountDetails) accountDetails).getAccountType(),
+			                             jwt));
+		System.out.println("RESPONSE: " + response);
+		return response;
+	}
+	
+/*	@PostMapping("/auth/login")
+	public ResponseEntity<?> generateToken(@RequestBody AuthRequest authRequest) throws Exception {
+	    // your code here
+	    HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.set("Access-Control-Allow-Origin", "*");
+	    return ResponseEntity.ok()
+	            .headers(responseHeaders)
+	            .body(new LoginResponse(HttpStatus.ACCEPTED, accountDetails.getUsername(), user.getUser_id(),
+	                    ((AccountDetails) accountDetails).getAccountType(), jwt));
+	}*/
 	
 	/**
 	 * Get user's order history page
