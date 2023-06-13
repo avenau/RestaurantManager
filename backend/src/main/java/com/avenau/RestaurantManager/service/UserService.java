@@ -33,7 +33,7 @@ public class UserService {
 	public User find(int id) {
 		Optional<User> foundCustomer = userRepo.findById(id);
 		
-		if (foundCustomer.get() == null) {
+		if (!foundCustomer.isPresent()) {
 			return null;
 		}
 		
@@ -42,7 +42,8 @@ public class UserService {
 	
 	public User find(String name) {
 		Optional<User> foundCustomer = userRepo.findByUsername(name);
-		if (userRepo.findByUsername(name) == null) {
+
+		if (!foundCustomer.isPresent()) {
 			return null;
 		}
 		

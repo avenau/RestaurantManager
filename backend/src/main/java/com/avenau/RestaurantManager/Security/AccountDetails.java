@@ -28,6 +28,11 @@ public class AccountDetails implements UserDetails
     {
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.accountType = user.getUserType();
+        this.authorities = Arrays.stream(user.getUserType().split(","))
+                                    .map(SimpleGrantedAuthority::new)
+                                    .collect(Collectors.toList());
+
     }
 
     public String getAccountType() {

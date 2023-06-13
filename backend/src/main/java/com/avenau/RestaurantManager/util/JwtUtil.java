@@ -1,5 +1,6 @@
 package com.avenau.RestaurantManager.util;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,9 +8,14 @@ import java.util.function.Function;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.avenau.RestaurantManager.Security.AccountDetails;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 /**
 * Spring security stuff as well
@@ -19,7 +25,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtil 
 {
    // Store in local environment
-   private String SECRET_KEY = "secret";
+   private String SECRET_KEY = new String(new char[1000]).replace('\0', 'd');
 
    public String extractUsername(String token)
    {
@@ -47,11 +53,16 @@ public class JwtUtil
        return extractExpiration(token).before(new Date());
    }
 
-   public String generateToken(UserDetails accountDetails)
+   public String generateToken(AccountDetails accountDetails)
    {
+	   System.out.println("Account Details Generate Toke: " + accountDetails.getUsername());
        Map<String, Object> claims = new HashMap<>();
+       
        return createToken(claims, accountDetails.getUsername());
    }
+   private Key key() {
+	    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+	  }
 
    private String createToken(Map<String, Object> claims, String subject)
    {
@@ -60,7 +71,7 @@ public class JwtUtil
                    .setSubject(subject)
                    .setIssuedAt(new Date(System.currentTimeMillis()))
                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                   .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                   .signWith(key(),SignatureAlgorithm.HS256)
                    .compact();
    }
 

@@ -37,7 +37,7 @@ function NavigationBar() {
         //     )
         // }
         console.log("RUNNING USEEFFECT");
-    }, [accountType])
+    }, [])
 
     function LogoutButton () {
 

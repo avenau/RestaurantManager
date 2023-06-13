@@ -45,7 +45,7 @@ function Login(props)
     {
         event.preventDefault();
         setError(null);
-
+        console.log ('In Login!!!' + username + ' ' + password)
         axios
         .post(BACKEND_LOGIN_URI, 
             { username: username, password: password }, 
@@ -54,16 +54,19 @@ function Login(props)
             crossDomain: true,
             headers: {
               'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*'
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'POST',
+              'Access-Control-Allow-Headers': 'Content-Type, Authorization'
             }}
             )
         .then(response => {
             // Login failure : data.statusCode 
-            if (response.data.statusCode === UNAUTHORIZED)
+            console.log('Response Status : ' + response.data);
+            if (response.data === UNAUTHORIZED)
             {
-                setError(response.msg);
+                setError('Username or Password is incorrect!');
                 Notification({  type: 'warning',
-                                msg: response.data.msg,
+                                msg: 'Username or Password is incorrect!',
                                 title: 'Login Failure'
                             });
                 return;

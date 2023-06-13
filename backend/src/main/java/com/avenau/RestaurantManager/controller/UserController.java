@@ -7,8 +7,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,12 +43,19 @@ public class UserController {
 	
 	
 	private UserService userService;
+	private AuthenticationManager authenticationManager;
+	private AccountDetailsService accountDetailsService;
 	
 	
 	@Autowired
-	public UserController(UserService service) {
+	public UserController(AuthenticationManager authenticationManager, AccountDetailsService accountDetailsService,
+			UserService userService, JwtUtil jwtUtil) {
 		super();
-		this.userService = service;
+		this.authenticationManager = authenticationManager;
+		this.accountDetailsService = accountDetailsService;
+		this.userService = userService;
+		this.jwtUtil = jwtUtil;
+
 	}
 	
 	/**
@@ -69,20 +78,35 @@ public class UserController {
 	@PostMapping("/auth/login")
 	public ResponseEntity<?> generateToken(@RequestBody AuthRequest authRequest) throws Exception {
 		log.info("new login request received");
-	    HttpHeaders responseHeaders = new HttpHeaders();
-	    responseHeaders.set("Access-Control-Allow-Origin", "*");
 		User user = userService.find(authRequest.getUsername());
 		AccountDetails accountDetails = new AccountDetails(user);
 		String jwt = jwtUtil.generateToken(accountDetails);
-		ResponseEntity<LoginResponse> response = ResponseEntity.ok()
-			    .header("Access-Control-Allow-Origin", "*")
+		ResponseEntity<LoginResponse> response = ResponseEntity.ok().body(new LoginResponse( HttpStatus.ACCEPTED,
+                accountDetails.getUsername(), 
+                user.getUser_id(),
+                ((AccountDetails) accountDetails).getAccountType(),
+                jwt));
+		System.out.println("RESPONSE: " + response);
+		return response;
+
+	    /*HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.set("Access-Control-Allow-Origin", "*");
+		User user = userService.find(authRequest.getUsername());
+		if (user == null) {
+			ResponseEntity<HttpStatus> exResponse = ResponseEntity.ok().body(HttpStatus.UNAUTHORIZED);
+			return exResponse;
+		}
+		AccountDetails accountDetails = new AccountDetails(user);
+		System.out.println("Print Username " + accountDetails.getUsername());
+		String jwt = jwtUtil.generateToken(accountDetails);
+		ResponseEntity<LoginResponse> response = ResponseEntity.ok()	
 			    .body(new LoginResponse(HttpStatus.ACCEPTED,
 			                             accountDetails.getUsername(),
 			                             user.getUser_id(),
 			                             ((AccountDetails) accountDetails).getAccountType(),
 			                             jwt));
 		System.out.println("RESPONSE: " + response);
-		return response;
+		return response;*/
 	}
 	
 /*	@PostMapping("/auth/login")
